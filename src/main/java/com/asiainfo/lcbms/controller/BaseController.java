@@ -9,7 +9,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class BaseController {
     @RequestMapping("/")
+    public String login() {
+        return "/login";
+    }
+
+    @RequestMapping("/index")
     public String index() {
-        return "traceonline/traceonline";
+        return "/index";
+    }
+
+    @RequestMapping("/main")
+    public String main() {
+        return "/main/main";
     }
 }
