@@ -135,8 +135,20 @@ layui.define([], function (exports) {
         parentMenuIdField: "parentMenuId",//父菜单id
         data: [
             {"menuId": "001", "menuName": "系统管理", "menuIcon": "fa-cog", "menuHref": "", "parentMenuId": 0},
-            {"menuId": "002", "menuName": "业务受理", "menuIcon":"layui-icon layui-icon-template-1", "menuHref": "", "parentMenuId": 0},
-            {"menuId": "003", "menuName": "综合查询", "menuIcon":"layui-icon layui-icon-component", "menuHref": "", "parentMenuId": 0},
+            {
+                "menuId": "002",
+                "menuName": "业务受理",
+                "menuIcon": "layui-icon layui-icon-template-1",
+                "menuHref": "",
+                "parentMenuId": 0
+            },
+            {
+                "menuId": "003",
+                "menuName": "综合查询",
+                "menuIcon": "layui-icon layui-icon-component",
+                "menuHref": "",
+                "parentMenuId": 0
+            },
             {"menuId": "001001", "menuName": "服务定义", "menuIcon": "fa-table", "menuHref": "", "parentMenuId": "001"},
             {"menuId": "001002", "menuName": "设备管理", "menuIcon": "", "menuHref": "", "parentMenuId": "001"},
             {"menuId": "002001", "menuName": "用户管理", "menuIcon": "", "menuHref": "", "parentMenuId": "002"},
@@ -146,11 +158,11 @@ layui.define([], function (exports) {
             {"menuId": "003002", "menuName": "清单查询", "menuIcon": "", "menuHref": "", "parentMenuId": "003"},
             {"menuId": "003003", "menuName": "在线查询", "menuIcon": "", "menuHref": "", "parentMenuId": "003"},
             {
-                "menuId":"001001000",
-                "menuName":"首页",
-                "menuIcon":"&#xe68e;",
-                "menuHref":"main",
-                "parentMenuId":"001001"
+                "menuId": "001001000",
+                "menuName": "首页",
+                "menuIcon": "&#xe68e;",
+                "menuHref": "main",
+                "parentMenuId": "001001"
             },
             {
                 "menuId": "001001001",

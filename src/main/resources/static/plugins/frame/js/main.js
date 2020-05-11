@@ -20,71 +20,71 @@
  * @author: fallsea
  * @version 2.3.1
  */
-layui.use(['fsMenu','layer','fsTab','fsCommon','fsConfig','element'], function(){
-	var fsTab = layui.fsTab,
-	element = layui.element,
-	layer = layui.layer,
-	fsConfig = layui.fsConfig,
-	fsCommon = layui.fsCommon,
-	statusName = $.result(fsConfig,"global.result.statusName","errorNo"),
-    msgName = $.result(fsConfig,"global.result.msgName","errorInfo"),
-	fsMenu = layui.fsMenu;
+layui.use(['fsMenu', 'layer', 'fsTab', 'fsCommon', 'fsConfig', 'element'], function () {
+    var fsTab = layui.fsTab,
+        element = layui.element,
+        layer = layui.layer,
+        fsConfig = layui.fsConfig,
+        fsCommon = layui.fsCommon,
+        statusName = $.result(fsConfig, "global.result.statusName", "errorNo"),
+        msgName = $.result(fsConfig, "global.result.msgName", "errorInfo"),
+        fsMenu = layui.fsMenu;
 
-	fsMenu.render();
+    fsMenu.render();
 
 
-	//渲染tab
-	fsTab.render();
+    //渲染tab
+    fsTab.render();
 
-	var screen_size = {
-        pc : [991, -1],
-        pad : [768, 990],
-        mobile : [0, 767]
+    var screen_size = {
+        pc: [991, -1],
+        pad: [768, 990],
+        mobile: [0, 767]
     }
 
-    var getDevice = function(){
+    var getDevice = function () {
         var width = $(window).width();
         for (var i in screen_size) {
             var sizes = screen_size[i],
                 min = sizes[0],
                 max = sizes[1];
-            if(max == -1) max = width;
-            if(min <= width && max >= width){
+            if (max == -1) max = width;
+            if (min <= width && max >= width) {
                 return i;
             }
         }
         return null;
     }
 
-    var isDevice = function(label){
+    var isDevice = function (label) {
         return getDevice() == label;
     }
 
-    var isMobile = function(){
+    var isMobile = function () {
         return !isDevice('pc');
     }
 
-    var slideSideBar = function() {
+    var slideSideBar = function () {
         var $slideSidebar = $('.slide-sidebar'),
             $pageContainer = $('.layui-body'),
             $mobileMask = $('.mobile-mask');
 
         var isFold = false;
-        $slideSidebar.click(function(e){
+        $slideSidebar.click(function (e) {
             e.preventDefault();
             var $this = $(this), $icon = $this.find('i'),
                 $admin = $('body').find('.layui-layout-admin');
             var toggleClass = isMobile() ? 'fold-side-bar-xs' : 'fold-side-bar';
-            if($icon.hasClass('ai-menufold')){
+            if ($icon.hasClass('ai-menufold')) {
                 $icon.removeClass('ai-menufold').addClass('ai-menuunfold');
                 $admin.addClass(toggleClass);
                 isFold = true;
-                if(isMobile()) {
+                if (isMobile()) {
                     $mobileMask.show();
-                }else{
+                } else {
                     $mobileMask.hide();
                 }
-            }else{
+            } else {
                 $icon.removeClass('ai-menuunfold').addClass('ai-menufold');
                 $admin.removeClass(toggleClass);
                 isFold = false;
@@ -94,28 +94,28 @@ layui.use(['fsMenu','layer','fsTab','fsCommon','fsConfig','element'], function()
 
         var tipIndex;
         // 菜单收起后的模块信息小提示
-        $('#fsLeftMenu li > a').hover(function(){
+        $('#fsLeftMenu li > a').hover(function () {
             var $this = $(this);
-            if(isFold) {
-                tipIndex = layer.tips($this.find('em').text(),$this);
+            if (isFold) {
+                tipIndex = layer.tips($this.find('em').text(), $this);
             }
-        }, function(){
-            if(isFold && tipIndex ){
+        }, function () {
+            if (isFold && tipIndex) {
                 layer.close(tipIndex);
                 tipIndex = null
             }
         })
 
-        $mobileMask.click(function(){
+        $mobileMask.click(function () {
             $slideSidebar.trigger('click');
         });
 
         //窗口大小变动时触发
-        window.onresize = function(){
+        window.onresize = function () {
             var $admin = $('body').find('.layui-layout-admin');
             var $icon = $('.slide-sidebar').find('i');
             var toggleClass = isMobile() ? 'fold-side-bar-xs' : 'fold-side-bar';
-            if(isMobile()){
+            if (isMobile()) {
                 $admin.removeClass('fold-side-bar');
                 $icon.removeClass('ai-menuunfold').addClass('ai-menufold');
             }
@@ -124,12 +124,12 @@ layui.use(['fsMenu','layer','fsTab','fsCommon','fsConfig','element'], function()
     slideSideBar();
 
 
-		/**
-	 * 右边菜单
-	 */
-	$.contextMenu({
+    /**
+     * 右边菜单
+     */
+    $.contextMenu({
         selector: '.layui-tab-title li',
-        callback: function(key, options) {
+        callback: function (key, options) {
             var layId = $(this).attr("lay-id");
             switch (key) {
                 case "close":
@@ -137,12 +137,12 @@ layui.use(['fsMenu','layer','fsTab','fsCommon','fsConfig','element'], function()
                     break;
                 case "closeOther":
 
-                    $(this).parent().children("li").each(function(i,e){
+                    $(this).parent().children("li").each(function (i, e) {
 
-                        if($(this).find(".layui-tab-close").is(":visible")){
+                        if ($(this).find(".layui-tab-close").is(":visible")) {
 
                             var newLayId = $(this).attr("lay-id");
-                            if(layId != newLayId ){
+                            if (layId != newLayId) {
                                 fsTab.del(newLayId);
                             }
                         }
@@ -150,8 +150,8 @@ layui.use(['fsMenu','layer','fsTab','fsCommon','fsConfig','element'], function()
                     break;
                 case "closeAll":
 
-                    $(this).parent().children("li").each(function(i,e){
-                        if($(this).find(".layui-tab-close").is(":visible")){
+                    $(this).parent().children("li").each(function (i, e) {
+                        if ($(this).find(".layui-tab-close").is(":visible")) {
                             var newLayId = $(this).attr("lay-id");
                             fsTab.del(newLayId);
                         }
@@ -162,15 +162,17 @@ layui.use(['fsMenu','layer','fsTab','fsCommon','fsConfig','element'], function()
             }
         },
         items: {
-            "close": {name: "关闭标签",icon:"fa-close",disabled: function(){
-                if($(this).find(".layui-tab-close").is(":visible")){
-                    return false;
+            "close": {
+                name: "关闭标签", icon: "fa-close", disabled: function () {
+                    if ($(this).find(".layui-tab-close").is(":visible")) {
+                        return false;
+                    }
+                    return true;
                 }
-                return true;
-            }},
-            "closeOther": {name: "关闭其他",icon:"fa-ban"},
-            "closeAll": {name: "关闭全部",icon:"fa-window-close"}
+            },
+            "closeOther": {name: "关闭其他", icon: "fa-ban"},
+            "closeAll": {name: "关闭全部", icon: "fa-window-close"}
         }
-	});
+    });
 
 });
