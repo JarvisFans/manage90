@@ -1,12 +1,11 @@
 package com.asiainfo.lcbms.controller;
 
 import com.asiainfo.lcbms.model.TOnline;
+import com.asiainfo.lcbms.model.TableResult;
 import com.asiainfo.lcbms.service.impl.TraceOnlineBOImpl;
 import com.asiainfo.lcbms.service.interfaces.TraceOnlineBO;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -14,15 +13,15 @@ import java.util.List;
  * @author felix
  */
 
-@Controller
+@RestController
 public class TraceOnlineController {
-    private static TraceOnlineBO traceOnlineBO = new TraceOnlineBOImpl();
+    private static final TraceOnlineBO traceOnlineBO = new TraceOnlineBOImpl();
 
     @PostMapping("/traceonline")
-    @ResponseBody
-    public String traceController(@RequestParam(value="mdn",required = false, defaultValue = "1") String mdn) {
-        System.out.println(mdn);
+    public TableResult traceController(String mdn) throws JsonProcessingException {
         List<TOnline> onlineList = traceOnlineBO.getOnlineListByMdn(mdn);
-        return onlineList.toString();
+        TableResult result = new TableResult(0,"执行成功");
+        result.setResult(onlineList);
+        return result;
     }
 }

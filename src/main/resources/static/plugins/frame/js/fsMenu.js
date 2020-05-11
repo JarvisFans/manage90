@@ -30,6 +30,7 @@ layui.define(['element', "fsConfig", "fsCommon"], function (exports) {
             {"menuId": "002003", "menuName": "黑白名单管理", "menuIcon": "", "menuHref": "", "parentMenuId": "002"},
             {"menuId": "003001", "menuName": "用户查询", "menuIcon": "", "menuHref": "", "parentMenuId": "003"},
             {"menuId": "003002", "menuName": "清单查询", "menuIcon": "", "menuHref": "", "parentMenuId": "003"},
+            {"menuId": "003003", "menuName": "在线查询", "menuIcon": "", "menuHref": "", "parentMenuId": "003"},
             {
                 "menuId":"001001000",
                 "menuName":"首页",
@@ -106,6 +107,13 @@ layui.define(['element', "fsConfig", "fsCommon"], function (exports) {
                 "menuIcon": "fa-list",
                 "menuHref": "views/datagrid2/index.html",
                 "parentMenuId": "003002"
+            },
+            {
+                "menuId": "003003001",
+                "menuName": "在线溯源",
+                "menuIcon": "",
+                "menuHref": "/trace",
+                "parentMenuId": "003003"
             },
         ] //本地数据
     };

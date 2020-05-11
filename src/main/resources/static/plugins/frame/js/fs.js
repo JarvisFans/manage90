@@ -343,7 +343,7 @@ layui.fsUtil.digit = function (num, length, end) {
             }
             return false;
         },
-        //获取对象指
+        //获取对象值
         result: function (object, path, defaultValue) {
             var value = "";
             if (!$.isEmpty(object) && $.isObject(object) && !$.isEmpty(path)) {
