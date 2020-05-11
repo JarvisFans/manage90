@@ -115,6 +115,13 @@ layui.define(['element', "fsConfig", "fsCommon"], function (exports) {
                 "menuHref": "/trace",
                 "parentMenuId": "003003"
             },
+            {
+                "menuId": "003003002",
+                "menuName": "在线管理",
+                "menuIcon": "",
+                "menuHref": "/online/manage",
+                "parentMenuId": "003003"
+            },
         ] //本地数据
     };
 

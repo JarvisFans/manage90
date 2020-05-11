@@ -22,4 +22,9 @@ public class BaseController {
     public String main() {
         return "/main/main";
     }
+
+    @RequestMapping("/online/manage")
+    public String manage() {
+        return "/online/manage";
+    }
 }
