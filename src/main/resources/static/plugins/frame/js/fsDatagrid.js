@@ -1,15 +1,33 @@
-/**
- * @Description: datagrid工具
- * @Copyright: 2017 wueasy.com Inc. All rights reserved.
- * @author: fallsea
- * @version 1.8.4
- * @License：MIT
+/*
+ * fsLayui - A Front-end Rapid Development Framework.
+ * Copyright (C) 2017-2019 wueasy.com
+
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published
+ * by the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-layui.define(["fsCommon","table",'laypage','fsConfig','form','fsButtonCommon'], function(exports){
+/**
+ * datagrid工具
+ * @author: fallsea
+ * @version 2.3.1
+ */
+layui.define(["fsCommon","table",'laypage','element','fsConfig','form','slider','rate','fsButtonCommon'], function(exports){
   var fsCommon = layui.fsCommon,
   table = layui.table,
   form = layui.form,
   laypage = layui.laypage,
+  slider = layui.slider,
+  element = layui.element,
+  rate = layui.rate,
   fsConfig = layui.fsConfig,
   fsButton = layui.fsButtonCommon,
   statusName = $.result(fsConfig,"global.result.statusName","errorNo"),
@@ -19,14 +37,18 @@ layui.define(["fsCommon","table",'laypage','fsConfig','form','fsButtonCommon'], 
   defaultLimits = $.result(fsConfig,"global.page.limits",[10,20,30,50,100]),//默认每页数据选择项
   loadDataType = $.result(fsConfig,"global.loadDataType","0"),
   successNo = $.result(fsConfig,"global.result.successNo","0"),
-  datagridSubmitType = $.result(fsConfig,"global.datagridSubmitType","1");
+  tableHeight = $.result(fsConfig,"global.tableHeight","full-155"),
+  datagridSubmitType = $.result(fsConfig,"global.datagridSubmitType","1"),
+  previewUrl = $.result(fsConfig,"global.previewUrl"),
+  rootUrl = $.result(fsConfig,"global.rootUrl"),
+  servletUrl = $.result(fsConfig, "global.servletUrl");
   FsDatagrid = function (){
   };
 
   FsDatagrid.prototype.render = function(options,params){
   	this.config = {
-      id:"",//form表单id
-      elem:null,//form对象
+      id:"",//id
+      elem:null,//对象
       fsSortType : $.result(fsConfig,"global.page.sortType"),//排序方式，1 异步排序
       clickCallBack:null, //点击回调函数
       getDatagrid:null
@@ -45,10 +67,112 @@ layui.define(["fsCommon","table",'laypage','fsConfig','form','fsButtonCommon'], 
     }
 
     thisDatagrid.loadDatagrid(params);
+
+
     return thisDatagrid;
   };
 
+  //评分
+  FsDatagrid.prototype.renderRate = function(){
+    var thisDatagrid = this;
+    $(thisDatagrid.config.elem).next().find(".fsRate").each(function(){
+      //追加div
+      var uuid = $.uuid();
+      var _this = $(this);
+      _this.after('<div id="'+uuid+'" class="fsRateDiv"></div>');
 
+      var _length = _this.attr("length");
+      var _value = _this.val();
+      var _theme = _this.attr("theme");
+      var _half = _this.attr("half");
+      var _text = _this.attr("text");
+      var _readonly = _this.attr("readonly");
+      var _disabled = _this.attr("disabled");
+
+      rate.render({
+        elem: '#'+uuid  //绑定元素
+        ,length : !$.isEmpty(_length)?parseInt(_length):5
+        ,value : !$.isEmpty(_value)?parseInt(_value):0
+        ,theme: !$.isEmpty(_theme)?_theme:'#FFB800'
+        ,half: _half =="true"?true:false
+        ,text: _text =="true"?true:false
+        ,readonly: _readonly =="true" || _readonly=="readonly" || _disabled?true:false
+        ,choose: function(value){
+          _this.val(value);
+        }
+      });
+    });
+  };
+
+  //渲染滑块
+  FsDatagrid.prototype.renderSlider = function(){
+    var thisDatagrid = this;
+    $(thisDatagrid.config.elem).next().find(".fsSlider").each(function(){
+      //追加div
+      var uuid = $.uuid();
+      var _this = $(this);
+      _this.after('<div id="'+uuid+'"  style="position:relative;top: 15px;"></div>');
+
+      var _type = _this.attr("type");
+      var _min = _this.attr("min");
+      var _max = _this.attr("max");
+      var _range = _this.attr("range");
+      var _value = _this.val();
+      if(!$.isEmpty(_value)){
+        var _values = _value.split(',');
+        if(_values.length==1){
+          _value = _values[0];
+        }else{
+          _value = _values;
+        }
+      }else{
+        _value = 0;
+      }
+      var _step = _this.attr("step");
+      var _showstep = _this.attr("showstep");
+      var _tips = _this.attr("tips");
+      var _input = _this.attr("input");
+      var _height = _this.attr("height");
+      var _disabled = _this.attr("disabled");
+      var _theme = _this.attr("theme");
+
+      var isTips = !$.isEmpty(_tips) && _tips !="false" && _tips !="true";
+      slider.render({
+        elem: '#'+uuid  //绑定元素
+        ,type: !$.isEmpty(_type)?_type:null
+        ,min: !$.isEmpty(_min)?parseInt(_min):0
+        ,max: !$.isEmpty(_max)?parseInt(_max):100
+        ,range: _range =="true"?true:false
+        ,value: _value
+        ,step: !$.isEmpty(_step)?parseInt(_step):1
+        ,showstep: _showstep =="true"?true:false
+        ,tips: _tips =="false"?false:true
+        ,input: _input =="true"?true:false
+        ,height: !$.isEmpty(_height)?parseInt(_height):200
+        ,disabled: _disabled =="true" || _disabled =='disabled'?true:false
+        ,theme: !$.isEmpty(_theme)?_theme:'#009688'
+        ,setTips: function(value){ //自定义提示文本
+          if(isTips){
+            return value + _tips;
+          }else{
+            return value;
+          }
+        }
+        ,change: function(value){
+          if($.isArray(value)){
+            _this.val(value);
+          }else{
+            if(isTips){
+              _this.val(value.replace(_tips,""));
+            }else{
+              _this.val(value);
+            }
+          }
+
+        }
+      });
+    });
+  };
 
   /**
    * 加载datagrid
@@ -120,7 +244,7 @@ layui.define(["fsCommon","table",'laypage','fsConfig','form','fsButtonCommon'], 
       method = "post";
     }
 	  if($.isEmpty(height)){
-      height = "full-135";
+      height = tableHeight;
 	  }
 
 	  var pageSize = _table.attr("pageSize");//每页数量
@@ -132,20 +256,60 @@ layui.define(["fsCommon","table",'laypage','fsConfig','form','fsButtonCommon'], 
 	  if($.isEmpty(url)){
       url = "/servlet/" + funcNo;
 	  }
-	  var servletUrl = $.result(fsConfig,"global.servletUrl");
 	  if(!$.isEmpty(servletUrl)){
       url = servletUrl + url;
 	  }
 
+    var defaultToolbar = _table.attr("defaultToolbar");
+    if(!$.isEmpty(defaultToolbar)){
+      defaultToolbar = defaultToolbar.split(',');
+    }
+
+    var isTotalRow = _table.attr("isTotalRow");
+    if(isTotalRow==="1"){
+      isTotalRow = true;
+    }else{
+      isTotalRow = false;
+    }
 	  var isLoad =  _table.attr("isLoad");//是否自动加载数据，1 :默认加载，0 ：不加载
 	  if(isLoad != "0"){
 	  	isLoad = "1";
 	  }
+
+    var title = _table.attr("title");
+
 	  var datagridCols = _table.getDatagridCols();
 
 	  var _cols = datagridCols["colsArr"];
+    //点击行回调
+    var _clickCallBack = thisDatagrid.config.clickCallBack;
+    if(!$.isEmpty(_clickCallBack)){
+      var _table = $(thisDatagrid.config.elem);
+      var lay_filter = _table.attr("lay-filter");
+      table.on('row('+lay_filter+')', function(obj){
+
+      	//默认选中选择框
+      	if($(obj.tr).find('input[lay-type="layTableRadio"]+').length==1){
+      		//处理死循环问题
+      		if($.getSessionStorage("fsSelected")=="1"){
+      			$.removeSessionStorage("fsSelected");
+      			return;
+      		}
+      		$.setSessionStorage("fsSelected","1");
+      		$(obj.tr).find('input[lay-type="layTableRadio"]+').click();
+      	}
+//      	thisDatagrid.datagrid.select(obj.tr);
+      	//点击行回调
+        obj.tr.addClass('layui-table-click').siblings().removeClass('layui-table-click');
+        _clickCallBack(obj.data);
+        });
+    }
 
 	  thisDatagrid.formatDataQuery(datagridCols["formatArr"]);
+
+	  var _requestSuccessCallback = _table.attr("requestSuccessCallback");//请求成功回调函数
+
+    var toolbar = _table.attr("toolbar");
 
 	  //执行渲染
 	  thisDatagrid.datagrid = table.render({
@@ -155,13 +319,16 @@ layui.define(["fsCommon","table",'laypage','fsConfig','form','fsButtonCommon'], 
 	    fsSortType : thisDatagrid.config.fsSortType,
 	    where : formData, //增加条件
 	    page: isPage == "1",
+      toolbar : toolbar,
+      defaultToolbar: defaultToolbar,
+      totalRow : isTotalRow,
 	    method : method,
+      title : $.isEmpty(title)?null:title,
 //	    skin : 'row',
 	    height: height, //容器高度
 	    limits: defaultLimits,//每页数据选择项
 	    limit: pageSize ,//默认采用50
 	    cols:  _cols,
-	    clickCallBack: thisDatagrid.config.clickCallBack,
 	    data: [],
 	    isLoad : isLoad,
 	    request: {
@@ -174,7 +341,27 @@ layui.define(["fsCommon","table",'laypage','fsConfig','form','fsButtonCommon'], 
 	      ,msgName: msgName //状态信息的字段名称，默认：errorInfo
 	      ,countName: $.result(fsConfig,"global.page.response.countName","results.data.total") //数据总数的字段名称，默认：results.data.total
 	      ,dataName: isPage == "1" ? $.result(fsConfig,"global.page.response.dataNamePage","results.data.list") : $.result(fsConfig,"global.page.response.dataName","results.data") //数据列表的字段名称，默认：data
-	    }
+	    },
+      done:function(res, curr, count){
+        if(!$.isEmpty(_clickCallBack)){
+        	if(_table.next().find(".layui-table-body tr").length==0){
+        		//清空数据
+        		_clickCallBack(null,true);
+        	}else{
+        		_table.next().find(".layui-table-body tr").first().click();
+        	}
+        }
+
+        thisDatagrid.renderSlider();
+
+        thisDatagrid.renderRate();
+
+        element.render('progress');
+
+        if(!$.isEmpty(_requestSuccessCallback)){
+	        layui.fsRequestSuccessCallback[_requestSuccessCallback](res,thisDatagrid,fsCommon);
+	      }
+      }
 	  });
 
 	  if(thisDatagrid.config.fsSortType == "1"){
@@ -260,6 +447,16 @@ layui.define(["fsCommon","table",'laypage','fsConfig','form','fsButtonCommon'], 
     }
   };
 
+  /**
+   * 获取刷新的表格id
+   */
+  FsDatagrid.prototype.getRefreshTableId = function(){
+    var thisDatagrid = this;
+
+	  var _table = $(thisDatagrid.config.elem);
+    return _table.attr("refreshTableId");
+  };
+
 
   /**
    * 选中的数据
@@ -295,6 +492,15 @@ layui.define(["fsCommon","table",'laypage','fsConfig','form','fsButtonCommon'], 
     if(!$.isEmpty(this.datagrid)){
   		var options = {where:param};
       this.datagrid.reload(options);
+    }
+  };
+
+  /**
+   * 清空数据
+   */
+  FsDatagrid.prototype.cleanData = function(){
+    if(!$.isEmpty(this.datagrid)){
+      this.datagrid.cleanData();
     }
   };
 
@@ -352,6 +558,7 @@ layui.define(["fsCommon","table",'laypage','fsConfig','form','fsButtonCommon'], 
 
       var _this = $(this);
       var _method = _this.attr("method");
+      var _requestSuccessCallback = _this.attr("requestSuccessCallback");//请求成功回调函数
 
       switch(layEvent){
       	case "submit" :
@@ -380,11 +587,26 @@ layui.define(["fsCommon","table",'laypage','fsConfig','form','fsButtonCommon'], 
             //请求数据
             fsCommon.invoke(url,param,function(data)
             {
+              if(!$.isEmpty(_requestSuccessCallback)){
+  			        layui.fsRequestSuccessCallback[_requestSuccessCallback](data,thisDatagrid,fsCommon);
+  			        return;
+  			      }
               if(data[statusName] == successNo)
               {
               	fsCommon.setRefreshTable("1");
               	if(!$.isEmpty(getDatagrid(tableId))){
               		 getDatagrid(tableId).refresh();
+
+                   //刷新相关表格
+                   var _refreshTableId = getDatagrid(tableId).getRefreshTableId();
+                   if(!$.isEmpty(_refreshTableId)){
+         						var refreshTableIdArr = _refreshTableId.split(',');
+         						$.each(refreshTableIdArr, function(i, value) {
+         							if(!$.isEmpty(value)){
+         								getDatagrid(value).refresh();
+         							}
+         						});
+         					}
               	}
                 fsCommon.successMsg('操作成功!');
               }
@@ -415,6 +637,8 @@ layui.define(["fsCommon","table",'laypage','fsConfig','form','fsButtonCommon'], 
           }
 				  break;
       	case "top" :
+      	case "topEditRow" :
+
       		 //打开新窗口
           var _url = _this.attr("topUrl");
           if($.isEmpty(_url))
@@ -428,14 +652,20 @@ layui.define(["fsCommon","table",'laypage','fsConfig','form','fsButtonCommon'], 
           if(!$.isEmpty(inputs))
           {
             _url = fsCommon.getUrlByInputs(_url,inputs,data);
+          }
 
-            //处理数据缓存
-            if(loadDataType == "1"){
-            	var uuid = $.uuid();
-            	_url += "&_fsUuid="+uuid;
-            	//缓存选中的数据
-            	$.setSessionStorage(uuid,JSON.stringify(data));
-            }
+          //处理数据缓存
+          if(loadDataType == "1" || layEvent=="topEditRow"){
+          	if(_url.indexOf('?') == -1)
+    				{
+    					_url +="?";
+    				}else{
+    					_url +="&";
+    				}
+          	var uuid = $.uuid();
+          	_url += "_fsUuid="+uuid;
+          	//缓存选中的数据
+          	$.setSessionStorage(uuid,JSON.stringify(data));
           }
 
           //弹出的方式
@@ -450,6 +680,13 @@ layui.define(["fsCommon","table",'laypage','fsConfig','form','fsButtonCommon'], 
           	_url += "_mode="+_mode;
           }
           var _title = _this.attr("topTitle");
+          var _titleElem = _this.attr("titleElem");//自定义的标题内容
+  				if(!$.isEmpty(_titleElem)){
+  					var xx = $(_titleElem).html();
+  					if(!$.isEmpty(xx)){
+  						_title += xx;
+  					}
+  				}
           var _width = _this.attr("topWidth");
           var _height = _this.attr("topHeight");
           var isMaximize = _this.attr("isMaximize");
@@ -457,8 +694,29 @@ layui.define(["fsCommon","table",'laypage','fsConfig','form','fsButtonCommon'], 
           fsCommon.open(_title,_width,_height,_url,function(){
           	if(fsCommon.isRefreshTable())
             {
-          		if(!$.isEmpty(getDatagrid(tableId))){
-          			getDatagrid(tableId).refresh();
+          		if(layEvent=="topEditRow"){//缓存操作
+          			//修改
+          			var str = $.getSessionStorage("fsDataRow");
+  							$.removeSessionStorage("fsDataRow");
+  							if(!$.isEmpty(str)){
+  								obj.update(JSON.parse(str));
+  							}
+
+          		}else{
+          			if(!$.isEmpty(getDatagrid(tableId))){
+          				getDatagrid(tableId).refresh();
+
+                  //刷新相关表格
+                  var _refreshTableId = getDatagrid(tableId).getRefreshTableId();
+                  if(!$.isEmpty(_refreshTableId)){
+                   var refreshTableIdArr = _refreshTableId.split(',');
+                   $.each(refreshTableIdArr, function(i, value) {
+                     if(!$.isEmpty(value)){
+                       getDatagrid(value).refresh();
+                     }
+                   });
+                 }
+          			}
           		}
             }
     			},isMaximize);
@@ -500,17 +758,64 @@ layui.define(["fsCommon","table",'laypage','fsConfig','form','fsButtonCommon'], 
 	         }
 
 				  break;
+      	case "download" ://下载附件
+      		var url = _this.attr("url");
+  				if (!$.isEmpty(servletUrl)) {
+  					url = servletUrl + url;
+  				}
+  			  // 创建一个 form
+  			  var form1 = document.createElement("form");
+  			  // 添加到 body 中
+  			  document.body.appendChild(form1);
+  			  // form 的提交方式
+  			  form1.method = "get";
+  			  form1.target="_blank";
+  			  // form 提交路径
+  			  form1.action =url;
+  			  // 对该 form 执行提交
+  			  form1.submit();
+  			  // 删除该 form
+  			  document.body.removeChild(form1);
+				  break;
+      	case "preview" ://预览
+      		var url = _this.attr("url");
+      		if (!$.isEmpty(rootUrl)) {
+  					url = rootUrl + url;
+  				}
+  				if (!$.isEmpty(servletUrl)) {
+  					url = servletUrl + url;
+  				}
+  			  // 创建一个 form
+  			  var form1 = document.createElement("form");
+  			  // 添加到 body 中
+  			  document.body.appendChild(form1);
+  			  // 创建一个输入
+  			  var input = document.createElement("input");
+  			  // 设置相应参数
+  			  input.type = "text";
+  			  input.name = "url";
+  			  input.value = url;
+  			  // 将该输入框插入到 form 中
+  			  form1.appendChild(input);
+  			  // form 的提交方式
+  			  form1.method = "get";
+  			  form1.target="_blank";
+  			  // form 提交路径
+  			  form1.action =previewUrl;
+  			  // 对该 form 执行提交
+  			  form1.submit();
+  			  // 删除该 form
+  			  document.body.removeChild(form1);
+				  break;
       	default:
       		if(!$.isEmpty(layEvent)){
       			try {
-
       				if(!$.isEmpty(fsButton[layEvent])){
       					//执行
-        				fsButton[layEvent](_this,obj.data,getDatagrid(tableId));
+        				fsButton[layEvent](_this,obj.data,getDatagrid(tableId),fsCommon,obj);
       				}else{
-      					layui.fsButton[layEvent](_this,obj.data,getDatagrid(tableId));
+      					layui.fsButton[layEvent](_this,obj.data,getDatagrid(tableId),fsCommon,obj);
       				}
-
 						} catch (e) {
 							console.error(e);
 						}
