@@ -18,6 +18,9 @@ public class TraceOnlineBOImpl implements TraceOnlineBO {
         TOnline online2 = new TOnline("mdn2","3.3.3.3","user2",
                 "imsi2","sessionid2","4.4.4.4",20);
         List<TOnline> list = new ArrayList<>();
+        //
+        mdn = "861064758110002";
+
         list.add(online1);
         list.add(online2);
         return list;

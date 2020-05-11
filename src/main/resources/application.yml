@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: manage90
+
+  cloud:
+    consul:
+      host: 10.21.17.175
+      port: 8510
+      discovery:
+        serviceName: manage90
+        register: true
+

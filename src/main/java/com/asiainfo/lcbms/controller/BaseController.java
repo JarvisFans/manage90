@@ -27,4 +27,9 @@ public class BaseController {
     public String manage() {
         return "/online/manage";
     }
+
+    @RequestMapping("/trace")
+    public String trace() {
+        return "/traceonline/traceonline";
+    }
 }
