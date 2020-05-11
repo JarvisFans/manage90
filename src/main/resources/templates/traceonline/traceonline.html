@@ -45,18 +45,6 @@
                                     </div>
                                 </div>
                                 <div class="layui-inline">
-                                    <label class="layui-form-mid">名称：</label>
-                                    <div class="layui-input-inline" style="width: 100px;">
-                                        <input type="text" name="name" autocomplete="off" class="layui-input"/>
-                                    </div>
-                                </div>
-                                <div class="layui-inline">
-                                    <label class="layui-form-mid">时间：</label>
-                                    <div class="layui-input-inline" style="">
-                                        <input type="text" name="createDate" autocomplete="off" class="layui-input fsDate" dateRange="1" placeholder=" - "/>
-                                    </div>
-                                </div>
-                                <div class="layui-inline">
                                     <div class="layui-input-inline">
                                         <button class="layui-btn layui-btn-blue" type="button" function="query"><i class="layui-icon">&#xe615;</i>查询</button>
                                     </div>
@@ -67,17 +55,14 @@
                     <table id="fsDatagrid" lay-filter="fsDatagrid" class="fsDatagrid" toolbar="#toolbarDemo" title="1111111" defaultToolbar="filter,print,exports" isTotalRow="1" isLoad="1" url="traceonline" isPage="1" sortType="1" pageSize="10" defaultForm="query_form"></table>
                     <div class="fsDatagridCols">
                         <p type="numbers" title="#"/>
-                        <p type="radio" totalRowText="合计:"/>
-                        <p field="id" title="ID" width="80" sort="true" hide="false" totalRow="true"/>
-                        <p field="name" title="名称" width="100" sort="true" />
-                        <p field="type" title="类型" width="150" dict="type"/>
-                        <p field="state" title="状态" width="80" templet="#stateTpl"/>
-                        <p field="city" title="滑块" width="200" templet="#cityTpl"/>
-                        <p field="modifiedBy" title="评分" width="200" templet="#modifiedByTpl"/>
-                        <p field="city2" title="进度条" width="200" templet="#cityTpl2"/>
-                        <p field="sex" title="性别" width="80" />
-                        <p field="area1" title="省份" width="100" dict="area1"/>
-                        <p fixed="right" align="center" toolbar="#barDemo" title="操作" width="220"/>
+                        <p field="mdn" title="MDN" width="100" sort="true"/>
+                        <p field="nasip" title="NAS地址" width="160" sort="true"/>
+                        <p field="username" title="用户名" width="150"/>
+                        <p field="imsi" title="IMSI" width="100"/>
+                        <p field="sessionid" title="SESSIONID" width="150"/>
+                        <p field="framedip" title="FRAME地址" width="160"/>
+                        <p field="timelen" title="时长" width="100"/>
+                        <p fixed="right" align="center" toolbar="#barDemo" title="操作" width="250"/>
                     </div>
                     <script type="text/html" id="stateTpl">
                         <input type="checkbox" name="state" lay-skin="switch" disabled lay-text="开启|关闭" {{ d.state == 1 ? 'checked' : '' }}>
