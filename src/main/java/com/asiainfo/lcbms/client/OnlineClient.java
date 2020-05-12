@@ -1,6 +1,5 @@
 package com.asiainfo.lcbms.client;
 
-import com.alibaba.fastjson.JSON;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 
