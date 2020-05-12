@@ -1,16 +1,16 @@
 package com.asiainfo.lcbms.controller;
 
 import com.asiainfo.lcbms.client.OnlineClient;
-import com.asiainfo.lcbms.http.request.TraceRequest;
+import com.asiainfo.lcbms.model.online.TraceRequest;
 import com.asiainfo.lcbms.model.TableResult;
-import com.asiainfo.lcbms.service.impl.TraceOnlineBOImpl;
-import com.asiainfo.lcbms.service.interfaces.TraceOnlineBO;
 import com.asiainfo.lcbms.util.JsonUtils;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
@@ -21,22 +21,26 @@ import java.util.List;
  */
 
 @RestController
+@Slf4j
 public class TraceOnlineController {
-    @Autowired
+
     private OnlineClient onlineClient;
-    private static final TraceOnlineBO traceOnlineBO = new TraceOnlineBOImpl();
+
+    @Autowired
+    public void setOnlineClient(OnlineClient onlineClient) {
+        this.onlineClient = onlineClient;
+    }
 
     @PostMapping("/traceonline")
     public TableResult traceController(String mdn) throws IOException {
-        List<Object> onlineList = null;
-        TraceRequest request = new TraceRequest();
-        request.setMdn(mdn);
-        request.setSid(String.valueOf(System.currentTimeMillis()));
+        List<Object> onlineList;
+        TraceRequest request = new TraceRequest(mdn,String.valueOf(System.currentTimeMillis()));
+
         String requestJson = JsonUtils.objToJson(request);
-        String responseJson = onlineClient.test(requestJson);
-        System.out.println(requestJson);
-//          onlineList = traceOnlineBO.getOnlineListByMdn(mdn);
-//              onlineList = JsonUtils.jsonToObjList(TOnline.class,responseJson);
+        log.info(requestJson);
+
+        String responseJson = onlineClient.getOnlineList(requestJson);
+
         ObjectMapper mapper = new ObjectMapper();
         JsonNode node = mapper.readTree(responseJson);
         if(node.findValue("code") != null ){
@@ -50,5 +54,10 @@ public class TraceOnlineController {
         System.out.println(onlineList.toString());
         result.setResult(onlineList);
         return result;
+    }
+
+    @RequestMapping("/trace")
+    public String trace() {
+        return "traceonline/traceonline";
     }
 }

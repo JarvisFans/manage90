@@ -1,3 +1,5 @@
+server:
+  port: 8087
 spring:
   application:
     name: manage90
@@ -9,4 +11,5 @@ spring:
       discovery:
         serviceName: manage90
         register: true
+
 

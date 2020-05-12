@@ -115,7 +115,7 @@ public class TableResult implements Serializable {
      */
     public void setResult(String name, Object object) {
         if (null == this.data) {
-            this.data = new HashMap<String, Object>();
+            this.data = new HashMap<>();
         }
         this.data.put(name, object);
     }

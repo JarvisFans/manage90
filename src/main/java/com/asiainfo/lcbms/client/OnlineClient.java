@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 /**
  * @author felix
  */
-@FeignClient(name="onlineserver-java")
+@FeignClient(name="onlineserver")
 public interface OnlineClient {
     @PostMapping("/online/query")
-    String test(String json);
+    String getOnlineList(String json);
 }

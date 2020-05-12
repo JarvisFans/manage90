@@ -10,26 +10,22 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class BaseController {
     @RequestMapping("/")
     public String login() {
-        return "/login";
+        return "login";
     }
 
     @RequestMapping("/index")
     public String index() {
-        return "/index";
+        return "index";
     }
 
     @RequestMapping("/main")
     public String main() {
-        return "/main/main";
+        return "main/main";
     }
 
     @RequestMapping("/online/manage")
     public String manage() {
-        return "/online/manage";
+        return "online/manage";
     }
 
-    @RequestMapping("/trace")
-    public String trace() {
-        return "/traceonline/traceonline";
-    }
 }

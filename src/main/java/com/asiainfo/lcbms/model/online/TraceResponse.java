@@ -1,4 +1,4 @@
-package com.asiainfo.lcbms.http.reponse;
+package com.asiainfo.lcbms.model.online;
 
 import com.asiainfo.lcbms.model.TOnline;
 import lombok.Data;
