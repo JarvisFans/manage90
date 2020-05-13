@@ -28,4 +28,8 @@ public class BaseController {
         return "online/manage";
     }
 
+    @RequestMapping("/trace")
+    public String trace() {
+        return "traceonline/traceonline";
+    }
 }

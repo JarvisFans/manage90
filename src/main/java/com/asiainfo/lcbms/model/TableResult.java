@@ -103,7 +103,7 @@ public class TableResult implements Serializable {
         this.setResult("pageNum",1);
         this.setResult("pageSize",10);
         this.setResult("pages",10);
-        this.setResult("total",((List)object).size());
+        this.setResult("total",((List)object).size() == 0 ? "0":((List)object).size());
     }
 
     /**

@@ -11,5 +11,3 @@ spring:
       discovery:
         serviceName: manage90
         register: true
-
-

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta content="text/html;charset=UTF-8"/>
@@ -28,6 +28,7 @@
     <script type="text/javascript" src="../../plugins/frame/js/fsDict.js?v=2.0.0"></script>
     <script type="text/javascript" src="../../plugins/frame/js/fs.js?v=2.0.0"></script>
     <script type="text/javascript" src="../../plugins/frame/js/frame.js?v=2.0.0"></script>
+    <title>在线溯源</title>
 </head>
 <body class="layui-view-body">
 <div class="layui-content">
@@ -40,7 +41,7 @@
                             <div class="layui-form-item">
                                 <div class="layui-inline">
                                     <label class="layui-form-mid">MDN：</label>
-                                    <div class="layui-input-inline" style="width: 100px;">
+                                    <div class="layui-input-inline" style="width: 200px;">
                                         <input type="tel" name="mdn" autocomplete="off" class="layui-input"/>
                                     </div>
                                 </div>
@@ -62,22 +63,9 @@
                         <p field="sessionid" title="SESSIONID" width="300"/>
                         <p field="framedip" title="FRAME地址" width="160"/>
                         <p field="timelen" title="时长" width="100"/>
-                        <p fixed="right" align="center" toolbar="#barDemo" title="操作" width="250"/>ok
+                        <p fixed="right" align="center" toolbar="#barDemo" title="操作" width="250"/>
                     </div>
-                    <script type="text/html" id="stateTpl">
-                        <input type="checkbox" name="state" lay-skin="switch" disabled lay-text="开启|关闭" {{ d.state == 1 ? 'checked' : '' }}>
-                    </script>
-                    <script type="text/html" id="cityTpl">
-                        <input type="text" class="fsSlider" name="city" range="false" tips="KB" value="{{ d.city }}" min="10" max="60" disabled="true" showstep="true" step="10" theme="#FF5722">
-                    </script>
-                    <script type="text/html" id="cityTpl2">
-                        <div class="layui-progress layui-progress-big" lay-showpercent="true">
-                            <div class="layui-progress-bar" lay-percent="{{ d.city ?d.city : 0 }}%"></div>
-                        </div>
-                    </script>
-                    <script type="text/html" id="modifiedByTpl">
-                        <input type="text" class="fsRate" name="modifiedBy" value="{{ d.modifiedBy }}" readonly="readonly" text="true">
-                    </script>
+
                     <script type="text/html" id="toolbarDemo">
                         <div class="layui-btn-container">
                             <button class="layui-btn layui-btn-sm layui-btn-danger" function="submit" method="get" url="/servlet/DEMO1003" isMutiDml="1" isConfirm="1" confirmMsg="是否确定删除选中的数据？" inputs="id:">
@@ -95,8 +83,5 @@
         </div>
     </div>
 </div>
-<script type="text/javascript">layui.fsButton.test2 =function(elem,data,datagrid,fsCommon){alert("测试自定义按钮2"+JSON.stringify(data));}
-</script>
-<script>var _hmt =_hmt ||[];(function() {var hm =document.createElement("script");hm.src ="https://hm.baidu.com/hm.js?d506ef94f6ea5b1b6824728a5e476535";var s =document.getElementsByTagName("script")[0];s.parentNode.insertBefore(hm,s);})();</script>
 </body>
 </html>

@@ -1,4 +1,4 @@
-package com.asiainfo.lcbms.model.online;
+package com.asiainfo.lcbms.model.trace;
 
 import lombok.Data;
 

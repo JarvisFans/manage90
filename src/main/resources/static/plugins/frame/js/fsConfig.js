@@ -237,14 +237,14 @@ layui.define([], function (exports) {
             {
                 "menuId": "003003001",
                 "menuName": "在线溯源",
-                "menuIcon": "",
+                "menuIcon": "fa-list",
                 "menuHref": "/trace",
                 "parentMenuId": "003003"
             },
             {
                 "menuId": "003003002",
                 "menuName": "在线管理",
-                "menuIcon": "",
+                "menuIcon": "fa-list",
                 "menuHref": "/online/manage",
                 "parentMenuId": "003003"
             },
