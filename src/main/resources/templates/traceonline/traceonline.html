@@ -18,16 +18,7 @@
     <link rel="stylesheet" href="../../plugins/ztree/css/zTreeStyle/zTreeStyle.css" type="text/css"/>
     <link href="../../plugins/toastr/toastr.min.css" rel="stylesheet"/>
     <link rel="stylesheet" type="text/css" href="../../plugins/layui/css/layui.css" media="all"/>
-    <script type="text/javascript" src="../../plugins/jquery/jquery.min.js"></script>
-    <script type="text/javascript" src="../../plugins/encrypt/jsencrypt.min.js"></script>
-    <script src="../../plugins/contextMenu/jquery.contextMenu.min.js"></script>
-    <script type="text/javascript" src="../../plugins/ztree/js/jquery.ztree.all.min.js"></script>
-    <script src="../../plugins/toastr/toastr.min.js"></script>
     <link rel="stylesheet" type="text/css" href="../../css/fs.css?v=2.0.0" media="all"/>
-    <script type="text/javascript" src="../../plugins/layui/layui.js"></script>
-    <script type="text/javascript" src="../../plugins/frame/js/fsDict.js?v=2.0.0"></script>
-    <script type="text/javascript" src="../../plugins/frame/js/fs.js?v=2.0.0"></script>
-    <script type="text/javascript" src="../../plugins/frame/js/frame.js?v=2.0.0"></script>
     <title>在线溯源</title>
 </head>
 <body class="layui-view-body">
@@ -63,19 +54,20 @@
                         <p field="sessionid" title="SESSIONID" width="300"/>
                         <p field="framedip" title="FRAME地址" width="160"/>
                         <p field="timelen" title="时长" width="100"/>
+                        <p field="apn" title="APN" width="100"/>
                         <p fixed="right" align="center" toolbar="#barDemo" title="操作" width="250"/>
                     </div>
 
                     <script type="text/html" id="toolbarDemo">
                         <div class="layui-btn-container">
                             <button class="layui-btn layui-btn-sm layui-btn-danger" function="submit" method="get" url="/servlet/DEMO1003" isMutiDml="1" isConfirm="1" confirmMsg="是否确定删除选中的数据？" inputs="id:">
-                                <i class="layui-icon">&#xe640;</i>批量踢下线
+                                <i class="layui-icon">&#xe640;</i>批量下线
                             </button>
                         </div>
                     </script>
                     <script type="text/html" id="barDemo">
                         <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="top" topUrl="views/datagrid/edit.html" topMode="readonly" topWidth="800px" topHeight="600px" topTitle="查看demo" inputs="id:">查看</a>
-                        <a class="layui-btn layui-btn-xs layui-btn-blue" lay-event="top" topUrl="views/datagrid/edit.html" topWidth="800px" topHeight="600px" topTitle="编辑demo" inputs="id:">踢下线</a>
+                        <a class="layui-btn layui-btn-xs layui-btn-blue" lay-event="kickoff" >强制下线</a>
                         <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="submit" url="/servlet/DEMO1003" isConfirm="1" method="get" confirmMsg="是否确定删除当前记录？" inputs="id:">删除</a>
                     </script>
                 </div>
@@ -83,5 +75,30 @@
         </div>
     </div>
 </div>
+<script type="text/javascript" src="../../plugins/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="../../plugins/encrypt/jsencrypt.min.js"></script>
+<script src="../../plugins/contextMenu/jquery.contextMenu.min.js"></script>
+<script type="text/javascript" src="../../plugins/ztree/js/jquery.ztree.all.min.js"></script>
+<script src="../../plugins/toastr/toastr.min.js"></script>
+<script type="text/javascript" src="../../plugins/layui/layui.js"></script>
+<script type="text/javascript" src="../../plugins/frame/js/fsDict.js?v=2.0.0"></script>
+<script type="text/javascript" src="../../plugins/frame/js/fs.js?v=2.0.0"></script>
+<script type="text/javascript" src="../../plugins/frame/js/frame.js?v=2.0.0"></script>
+<script>
+    layui.fsButton.kickoff = function(elem,data,datagrid,fsCommon){
+        layer.confirm('确定强制下线该记录?', {icon: 3, title:'提示'}, function(index){
+            layer.close(index);
+            console.log(data)
+            $.post('online/kickoff', {mdn: data.mdn, nasIp: data.nasip, apn: data.apn}, function (res) {
+               if (res.code == '0') {
+                   layer.msg("强制下线成功");
+               } else {
+                   layer.msg("强制下线失败")
+               }
+            });
+
+        });
+    }
+</script>
 </body>
 </html>

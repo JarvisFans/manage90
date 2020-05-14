@@ -18,4 +18,5 @@ public class TOnline {
     private String sessionid;
     private String framedip;
     private Integer timelen;
+    private String apn;
 }
