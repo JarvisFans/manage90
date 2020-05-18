@@ -1,18 +1,20 @@
 package com.asiainfo.lcbms.model.trace;
 
-import com.asiainfo.lcbms.model.TOnline;
 import lombok.Data;
-
-import java.util.List;
 
 /**
  * @author felix
  */
 @Data
 public class TraceResponse {
-    private String sid;
-    private List<TOnline> onlineList;
-    private String appType;
-    private String code;
-    private String message;
+    private String mdn;
+    private String nasIp;
+    private String userName;
+    private String imsi;
+    private String sessionId;
+    private String framedIp;
+    private Integer timeLen;
+
+    private String error;
+    private String appInfo;
 }

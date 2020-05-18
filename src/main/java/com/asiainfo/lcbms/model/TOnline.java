@@ -12,11 +12,11 @@ import lombok.ToString;
 @ToString
 public class TOnline {
     private String mdn;
-    private String nasip;
-    private String username;
+    private String nasIp;
+    private String userName;
     private String imsi;
-    private String sessionid;
-    private String framedip;
-    private Integer timelen;
+    private String sessionId;
+    private String framedIp;
+    private Integer timeLen;
     private String apn;
 }

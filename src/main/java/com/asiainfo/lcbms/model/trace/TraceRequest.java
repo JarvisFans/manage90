@@ -8,11 +8,11 @@ import lombok.Data;
 @Data
 public class TraceRequest {
     private String mdn;
-    private String sid;
+    private String apn;
 
-    public TraceRequest(String mdn, String sid) {
+    public TraceRequest(String mdn, String apn) {
         this.mdn = mdn;
-        this.sid = sid;
+        this.apn = apn;
     }
 
 }
