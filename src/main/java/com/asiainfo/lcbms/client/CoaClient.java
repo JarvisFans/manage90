@@ -13,6 +13,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 @FeignClient("coa-server")
 public interface CoaClient {
 
-    @PostMapping("/kickoff")
+    @PostMapping("/coaserver/aitest/1.0/online/delete")
     String kickOff(String req);
 }

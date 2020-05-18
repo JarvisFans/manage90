@@ -13,17 +13,17 @@ import java.util.UUID;
 @Data
 public class CoaRequest {
 
-    private String sessionid;
+    private String sessionId;
     private String mdn;
-    private String nasip;
+    private String nasIp;
     private String apn;
 
     public CoaRequest() {}
 
-    public CoaRequest(String mdn, String nasip, String apn) {
+    public CoaRequest(String mdn, String nasip, String apn, String sessionId) {
         this.mdn = mdn;
-        this.nasip = nasip;
+        this.nasIp = nasip;
         this.apn = apn;
-        this.sessionid = UUID.randomUUID().toString().replaceAll("-", "");
+        this.sessionId = sessionId;
     }
 }

@@ -95,10 +95,11 @@
         layer.confirm('确定强制下线该记录?', {icon: 3, title:'提示'}, function(index){
             layer.close(index);
             console.log(data)
-            $.post('online/kickoff', {mdn: data.mdn, nasIp: data.nasip, apn: data.apn}, function (res) {
-               if (res.code == '0') {
+            $.post('online/kickoff', {mdn: data.mdn, nasIp: data.nasIp, apn: data.apn, sessionId: data.sessionId}, function (res) {
+                if (res.success && res.success == 'true') {
                    layer.msg("强制下线成功");
-               } else {
+
+                } else {
                    layer.msg("强制下线失败")
                }
             });
