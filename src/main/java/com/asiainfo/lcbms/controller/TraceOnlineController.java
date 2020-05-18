@@ -34,7 +34,7 @@ public class TraceOnlineController {
     @PostMapping("/traceonline")
     public TableResult traceController(String mdn, String apn) {
         List<TOnline> onlineList;
-        TableResult result;
+        TableResult result = null;
         TraceRequest request = new TraceRequest(mdn, apn);
         try {
             Gson gson = new Gson();
@@ -43,10 +43,12 @@ public class TraceOnlineController {
             String responseJson = onlineClient.getOnlineList(requestJson);
             log.info(responseJson);
 
-            TraceResponse response = gson.fromJson(responseJson, TraceResponse.class);
-            if (response.getError() != null) {
-                result = new TableResult(0, response.getError());
-                log.info(response.toString());
+            if (responseJson.startsWith("{")) {
+                TraceResponse response = gson.fromJson(responseJson, TraceResponse.class);
+                if (response.getError() != null) {
+                    result = new TableResult(0, response.getError());
+                    log.info(response.toString());
+                }
             } else {
                 Type listType = new TypeToken<ArrayList<TOnline>>() {
                 }.getType();
