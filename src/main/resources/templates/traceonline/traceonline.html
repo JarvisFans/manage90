@@ -39,7 +39,7 @@
                                 <div class="layui-inline">
                                     <label class="layui-form-mid">APN：</label>
                                     <div class="layui-input-inline" style="width: 200px;">
-                                        <input type="tel" name="apn" autocomplete="off" class="layui-input"/>
+                                        <input type="tel" id="apn" name="apn" autocomplete="off" class="layui-input"/>
                                     </div>
                                 </div>
                                 <div class="layui-inline">
@@ -94,8 +94,9 @@
     layui.fsButton.kickoff = function(elem,data,datagrid,fsCommon){
         layer.confirm('确定强制下线该记录?', {icon: 3, title:'提示'}, function(index){
             layer.close(index);
+            var apn = $('apn').val();
             console.log(data)
-            $.post('online/kickoff', {mdn: data.mdn, nasIp: data.nasIp, apn: data.apn, sessionId: data.sessionId}, function (res) {
+            $.post('online/kickoff', {mdn: data.mdn, nasIp: data.nasIp, apn: apn, sessionId: data.sessionId}, function (res) {
                 if (res.success && res.success == 'true') {
                    layer.msg("强制下线成功");
 
