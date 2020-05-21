@@ -69,6 +69,9 @@
                             <button class="layui-btn layui-btn-sm layui-btn-danger" function="submit" method="get" url="/servlet/DEMO1003" isMutiDml="1" isConfirm="1" confirmMsg="是否确定删除选中的数据？" inputs="id:">
                                 <i class="layui-icon">&#xe640;</i>批量下线
                             </button>
+                            <button class="layui-btn layui-btn-sm layui-btn-danger" onclick="postForm()">
+                                <i class="layui-icon">&#xe640;</i>Ribbon策略测试
+                            </button>
                         </div>
                     </script>
                     <script type="text/html" id="barDemo">
@@ -90,11 +93,12 @@
 <script type="text/javascript" src="../../plugins/frame/js/fsDict.js?v=2.0.0"></script>
 <script type="text/javascript" src="../../plugins/frame/js/fs.js?v=2.0.0"></script>
 <script type="text/javascript" src="../../plugins/frame/js/frame.js?v=2.0.0"></script>
+<script type="text/javascript" src="../../js/traceonline.js"></script>
 <script>
     layui.fsButton.kickoff = function(elem,data,datagrid,fsCommon){
         layer.confirm('确定强制下线该记录?', {icon: 3, title:'提示'}, function(index){
             layer.close(index);
-            var apn = $('apn').val();
+            var apn = $('#apn').val();
             console.log(data)
             $.post('online/kickoff', {mdn: data.mdn, nasIp: data.nasIp, apn: apn, sessionId: data.sessionId}, function (res) {
                 if (res.success && res.success == 'true') {

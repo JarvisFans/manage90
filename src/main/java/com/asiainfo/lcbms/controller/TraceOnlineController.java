@@ -40,14 +40,18 @@ public class TraceOnlineController {
             Gson gson = new Gson();
             String requestJson = gson.toJson(request);
             log.info(requestJson);
+            long startTime = System.currentTimeMillis();
             String responseJson = onlineClient.getOnlineList(requestJson);
+            long endTime = System.currentTimeMillis();
+            // 总计执行时间
+            log.info("程序执行时间:" + (endTime - startTime) + "ms");
             log.info(responseJson);
 
             if (responseJson.startsWith("{")) {
                 TraceResponse response = gson.fromJson(responseJson, TraceResponse.class);
                 if (response.getError() != null) {
                     result = new TableResult(0, response.getError());
-                    log.info(response.toString());
+                    log.info("服务端返回错误信息:" + response.getError());
                 }
             } else {
                 Type listType = new TypeToken<ArrayList<TOnline>>() {

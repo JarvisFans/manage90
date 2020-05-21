@@ -25,7 +25,18 @@
             <id>local</id>
             <properties>
                 <javaHome>/Library/Java/JavaVirtualMachines/jdk1.8.0_211.jdk/Contents/Home</javaHome>
-                <workHome>/Users/fan/Documents/MicroService/manage90</workHome>
+                <workHome>/Users/fan/Documents/MicroService/manage90/target</workHome>
+                <projectName>manage90</projectName>
+            </properties>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+        </profile>
+        <profile>
+            <id>dev</id>
+            <properties>
+                <javaHome>/usr</javaHome>
+                <workHome>/home/lctest/msi/manage90</workHome>
                 <projectName>manage90</projectName>
             </properties>
             <activation>
@@ -53,18 +64,21 @@
         </dependency>
 
         <!-- consul -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-actuator</artifactId>
-        </dependency>
+        <!--        <dependency>-->
+        <!--            <groupId>org.springframework.boot</groupId>-->
+        <!--            <artifactId>spring-boot-starter-actuator</artifactId>-->
+        <!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.springframework.cloud</groupId>-->
+        <!--            <artifactId>spring-cloud-starter-consul-discovery</artifactId>-->
+        <!--            <version>2.2.2.RELEASE</version>-->
+        <!--        </dependency>-->
+
+
+        <!-- eureka -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-consul-discovery</artifactId>
-            <version>2.2.2.RELEASE</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-openfeign</artifactId>
+            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
             <version>2.2.2.RELEASE</version>
         </dependency>
 
@@ -95,11 +109,29 @@
             <version>2.8.6</version>
         </dependency>
 
-        <!-- 修复Feign请求BUG-->
+        <!-- 修复Feign中Get请求不能带Body的问题-->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
+            <version>2.2.2.RELEASE</version>
+        </dependency>
         <dependency>
             <groupId>io.github.openfeign</groupId>
             <artifactId>feign-httpclient</artifactId>
             <version>10.1.0</version>
+        </dependency>
+
+        <!-- 修复RestTemplate中Get请求不能带Body的问题 -->
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpcore</artifactId>
+            <version>4.4.13</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-hystrix</artifactId>
+            <version>2.2.2.RELEASE</version>
         </dependency>
     </dependencies>
 

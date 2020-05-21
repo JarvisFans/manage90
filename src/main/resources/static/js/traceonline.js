@@ -1,14 +1,10 @@
 function postForm() {
-    var params = $("#searchForm").serialize();
+    var params = $("#query_form").serialize();
 
-    $.post("/traceonline",params,function (result) {
-        if(result){
-            var aToStr=JSON.stringify(result);
-            // alert(aToStr);
-            // for(var i=0;i<result.length;i++){
-            //     s = "<tr><td>"+result + "</td></tr>";
-            //     $("#tab").append(s);
-            // }
+    $.post("/test/ribbon",params,function (data) {
+        console.log(data);
+        if(data){
+            alert(data);
         }else{
             alert("查询错误");
         }

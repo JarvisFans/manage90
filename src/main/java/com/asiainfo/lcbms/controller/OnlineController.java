@@ -5,9 +5,9 @@ import com.asiainfo.lcbms.model.CoaRequest;
 import com.asiainfo.lcbms.model.CoaResponse;
 import com.asiainfo.lcbms.util.StringUtil;
 import com.google.gson.Gson;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -21,13 +21,16 @@ import java.util.Map;
  */
 
 @RestController
+@Slf4j
 @RequestMapping("/online")
 public class OnlineController {
 
-    private static final Logger logger = LoggerFactory.getLogger(OnlineController.class);
+    private CoaClient coaClient;
 
     @Autowired
-    private CoaClient coaClient;
+    public void setCoaClient(CoaClient coaClient) {
+        this.coaClient = coaClient;
+    }
 
     @PostMapping("/kickoff")
     public String kickOff(@RequestParam(value = "mdn") String mdn, @RequestParam(value = "nasIp") String nasIp,
