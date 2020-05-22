@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-    <property name="LOG_HOME" value="@workHome@/log"/>
+    <property name="LOG_HOME" value="./log"/>
     <property name="LOG_NAME" value="${LOG_HOME}/manage.log%d{yyyyMMdd}"/>
     <property name="PATTERN" value="%date %p %logger{0} - %m%n"/>
 

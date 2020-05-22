@@ -3,6 +3,8 @@ package com.asiainfo.lcbms.client.fallback;
 import com.asiainfo.lcbms.client.CoaClient;
 import com.asiainfo.lcbms.model.CoaResponse;
 import com.google.gson.Gson;
+import feign.hystrix.FallbackFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 /**
@@ -10,10 +12,15 @@ import org.springframework.stereotype.Component;
  */
 
 @Component
-public class CoaClientFallback implements CoaClient {
+@Slf4j
+public class CoaClientFallback implements FallbackFactory<CoaClient> {
+
     @Override
-    public String kickOff(String req) {
-        CoaResponse response = new CoaResponse("-1","程序熔断，降级处理");
-        return new Gson().toJson(response);
+    public CoaClient create(Throwable throwable) {
+        return req -> {
+            log.warn("Feign Fallback Exception" + throwable);
+            CoaResponse response = new CoaResponse("-1","程序降级处理,降级原因:"+throwable);
+            return new Gson().toJson(response);
+        };
     }
 }

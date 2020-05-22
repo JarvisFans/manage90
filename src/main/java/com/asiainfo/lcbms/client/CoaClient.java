@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
  * @description
  */
 
-@FeignClient(name = "coa-server", fallback = CoaClientFallback.class)
+@FeignClient(name = "coa-server", fallbackFactory = CoaClientFallback.class)
 @Primary
 public interface CoaClient {
 

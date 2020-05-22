@@ -40,6 +40,17 @@
                 <projectName>manage90</projectName>
             </properties>
             <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+        </profile>
+        <profile>
+            <id>eurekaDocker</id>
+            <properties>
+                <javaHome>/usr</javaHome>
+                <workHome>/home/log/</workHome>
+                <projectName>manage90</projectName>
+            </properties>
+            <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
         </profile>
@@ -128,6 +139,7 @@
             <version>4.4.13</version>
         </dependency>
 
+        <!-- hystrix依赖 -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-netflix-hystrix</artifactId>
@@ -140,6 +152,23 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>com.spotify</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>1.0.0</version>
+                <configuration>
+                    <imageName>${project.artifactId}</imageName>
+                    <!-- 指定Dockerfile文件地址 -->
+                    <dockerDirectory>${project.basedir}/src/main/docker</dockerDirectory>
+                    <resources>
+                        <resource>
+                            <targetPath>/</targetPath>
+                            <directory>${project.build.directory}</directory>
+                            <include>${project.build.finalName}.jar</include>
+                        </resource>
+                    </resources>
+                </configuration>
             </plugin>
         </plugins>
 

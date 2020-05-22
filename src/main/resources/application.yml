@@ -1,13 +1,13 @@
 server:
-  # port: 8087
-  # eureka & random
-  port: 10001
+  port: 10007
+
 spring:
   application:
     name: manage90
-feign:
-  hystrix:
-    enabled: true
+  cloud:
+    loadbalancer:
+      ribbon:
+        enabled: true
 
 #  cloud:
 #    consul:
@@ -19,18 +19,40 @@ feign:
 
 eureka:
   client:
+    register-with-eureka: false
     service-url:
       defaultZone: http://10.21.17.175:18081/eureka/,http://10.21.17.175:18082/eureka/,http://10.21.17.175:18083/eureka/
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.application.name}:${server.port}
 
-#onlineserver:
-#  ribbon:
-#    # NFLoadBalancerRuleClassName: com.netflix.loadbalancer.RandomRule #配置规则 随机
-#    NFLoadBalancerRuleClassName: com.netflix.loadbalancer.RoundRobinRule #配置规则 轮询
-#    # NFLoadBalancerRuleClassName: com.netflix.loadbalancer.RetryRule #配置规则 重试
-#    # NFLoadBalancerRuleClassName: com.netflix.loadbalancer.WeightedResponseTimeRule #配置规则 响应时间权重
-#    # NFLoadBalancerRuleClassName: com.netflix.loadbalancer.BestAvailableRule #配置规则 最空闲连接策略
+feign:
+  hystrix:
+    enabled: true
+
+onlineserver:
+  ribbon:
+    # NFLoadBalancerRuleClassName: com.netflix.loadbalancer.RandomRule #配置规则 随机
+    # NFLoadBalancerRuleClassName: com.netflix.loadbalancer.RoundRobinRule #配置规则 轮询
+    # NFLoadBalancerRuleClassName: com.netflix.loadbalancer.RetryRule #配置规则 重试
+    # NFLoadBalancerRuleClassName: com.netflix.loadbalancer.WeightedResponseTimeRule #配置规则 响应时间权重
+    # NFLoadBalancerRuleClassName: com.netflix.loadbalancer.BestAvailableRule #配置规则 最空闲连接策略
+    # NFLoadBalancerRuleClassName: com.netflix.loadbalancer.ZoneAvoidanceRule
+    NFLoadBalancerRuleClassName: com.netflix.loadbalancer.AvailabilityFilteringRule
+
+coa-server:
+  ribbon:
+    # NFLoadBalancerRuleClassName: com.netflix.loadbalancer.RandomRule #配置规则 随机
+    # NFLoadBalancerRuleClassName: com.netflix.loadbalancer.RoundRobinRule #配置规则 轮询
+    # NFLoadBalancerRuleClassName: com.netflix.loadbalancer.RetryRule #配置规则 重试
+    # NFLoadBalancerRuleClassName: com.netflix.loadbalancer.WeightedResponseTimeRule #配置规则 响应时间权重
+    # NFLoadBalancerRuleClassName: com.netflix.loadbalancer.BestAvailableRule #配置规则 最空闲连接策略
+    # NFLoadBalancerRuleClassName: com.netflix.loadbalancer.ZoneAvoidanceRule
+    NFLoadBalancerRuleClassName: com.netflix.loadbalancer.AvailabilityFilteringRule
+
 #    ConnectTimeout: 500 #请求连接超时时间
 #    ReadTimeout: 1000 #请求处理的超时时间
 #    OkToRetryOnAllOperations: true #对所有请求都进行重试
 #    MaxAutoRetriesNextServer: 2 #切换实例的重试次数
 #    MaxAutoRetries: 1 #对当前实例的重试次数
+#    retryableStatusCodes: 500,404,502 #对Http响应码进行重试

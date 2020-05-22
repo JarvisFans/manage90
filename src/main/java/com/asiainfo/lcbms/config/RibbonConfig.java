@@ -25,20 +25,20 @@ public class RibbonConfig {
         return restTemplate;
     }
 
-    @Bean
-    public IRule myRule(){
-        // 随机
-        return new RandomRule();
-        // 轮询
-        // return new RoundRobinRule();
-        // 重试
-        // return new RetryRule();
-        // 响应时间权重
-        // return new WeightedResponseTimeRule();
-        // 最空闲连接策略
-        // return new BestAvailableRule();
-        // return new ZoneAvoidanceRule();
-    }
+//    @Bean
+//    public IRule myRule(){
+//        // 随机
+//        // return new RandomRule();
+//        // 轮询
+//        // return new RoundRobinRule();
+//        // 重试
+//        // return new RetryRule();
+//        // 响应时间权重
+//        // return new WeightedResponseTimeRule();
+//        // 最空闲连接策略
+//        // return new BestAvailableRule();
+//        // return new ZoneAvoidanceRule();
+//    }
 
     /**
      * see https://blog.belonk.com/c/http_resttemplate_get_with_body.html

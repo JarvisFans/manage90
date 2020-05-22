@@ -7,8 +7,10 @@ import com.asiainfo.lcbms.util.StringUtil;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,7 +18,6 @@ import java.util.Map;
 /**
  * @author zhangjp
  * @date 2020-05-11 16:16
- *
  * @description
  */
 
@@ -41,9 +42,15 @@ public class OnlineController {
                 return gson.toJson(new CoaResponse("-1", "mdn,nasip,framedip,sessionId不能为空"));
             }
             CoaRequest coaRequest = new CoaRequest(mdn, nasIp, apn, sessionId);
+            String requestJson = gson.toJson(coaRequest);
+            log.info(requestJson);
+            long startTime = System.currentTimeMillis();
             String response = coaClient.kickOff(gson.toJson(coaRequest));
+            long endTime = System.currentTimeMillis();
+            log.info("程序执行时间:" + (endTime - startTime) + "ms");
+            log.info(response);
             return response;
-        }catch (Exception e) {
+        } catch (Exception e) {
             Map<String, String> map = new HashMap<>();
             map.put("error", "error");
             return gson.toJson(map);
