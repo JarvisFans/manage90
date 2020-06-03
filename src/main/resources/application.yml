@@ -1,5 +1,12 @@
 server:
-  port: 10007
+  port: 10001
+  undertow:
+    threads:
+      io: 4
+    buffer-size: 1024
+    direct-buffers: true
+  #  tomcat:
+  #    max-threads: 400
 
 spring:
   application:
@@ -19,16 +26,47 @@ spring:
 
 eureka:
   client:
-    register-with-eureka: false
+    register-with-eureka: true
     service-url:
-      defaultZone: http://10.21.17.175:18081/eureka/,http://10.21.17.175:18082/eureka/,http://10.21.17.175:18083/eureka/
+      defaultZone: http://10.21.37.229:18002/eureka/,http://10.21.37.229:18003/eureka/,http://10.21.37.229:18004/eureka/
   instance:
+    ip-address: 10.21.37.230
     prefer-ip-address: true
     instance-id: ${spring.application.name}:${server.port}
 
 feign:
   hystrix:
     enabled: true
+  compression:
+    request:
+      enabled: true
+      mime-types: text/xml,application/xml,application/json
+    response:
+      enabled: true
+  httpclient:
+    enabled: true
+    max-connections: 1000
+    max-connections-per-route: 200
+
+hystrix:
+  threadpool:
+    default:
+      coreSize: 100
+#      maximumSize: 400
+#      allowMaximumSizeToDivergeFromCoreSize: true
+  command:
+    default:
+      circuitBreaker:
+        requestVolumeThreshold: 100
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 2000 # 服务熔断时间，解决COA-SERVER踢下线实际操作时间总是超过1000ms的问题
+
+ribbon:
+  eager-load:
+    enabled: true
+    clients: onlineserver,coa-server
 
 onlineserver:
   ribbon:
@@ -36,9 +74,10 @@ onlineserver:
     # NFLoadBalancerRuleClassName: com.netflix.loadbalancer.RoundRobinRule #配置规则 轮询
     # NFLoadBalancerRuleClassName: com.netflix.loadbalancer.RetryRule #配置规则 重试
     # NFLoadBalancerRuleClassName: com.netflix.loadbalancer.WeightedResponseTimeRule #配置规则 响应时间权重
-    # NFLoadBalancerRuleClassName: com.netflix.loadbalancer.BestAvailableRule #配置规则 最空闲连接策略
+    NFLoadBalancerRuleClassName: com.netflix.loadbalancer.BestAvailableRule #配置规则 最空闲连接策略
     # NFLoadBalancerRuleClassName: com.netflix.loadbalancer.ZoneAvoidanceRule
-    NFLoadBalancerRuleClassName: com.netflix.loadbalancer.AvailabilityFilteringRule
+    # NFLoadBalancerRuleClassName: com.netflix.loadbalancer.AvailabilityFilteringRule
+    ReadTimeout: 1000 #请求处理的超时时间
 
 coa-server:
   ribbon:
@@ -46,9 +85,10 @@ coa-server:
     # NFLoadBalancerRuleClassName: com.netflix.loadbalancer.RoundRobinRule #配置规则 轮询
     # NFLoadBalancerRuleClassName: com.netflix.loadbalancer.RetryRule #配置规则 重试
     # NFLoadBalancerRuleClassName: com.netflix.loadbalancer.WeightedResponseTimeRule #配置规则 响应时间权重
-    # NFLoadBalancerRuleClassName: com.netflix.loadbalancer.BestAvailableRule #配置规则 最空闲连接策略
+    NFLoadBalancerRuleClassName: com.netflix.loadbalancer.BestAvailableRule #配置规则 最空闲连接策略
     # NFLoadBalancerRuleClassName: com.netflix.loadbalancer.ZoneAvoidanceRule
-    NFLoadBalancerRuleClassName: com.netflix.loadbalancer.AvailabilityFilteringRule
+    # NFLoadBalancerRuleClassName: com.netflix.loadbalancer.AvailabilityFilteringRule
+    ReadTimeout: 1000 #请求处理的超时时间
 
 #    ConnectTimeout: 500 #请求连接超时时间
 #    ReadTimeout: 1000 #请求处理的超时时间

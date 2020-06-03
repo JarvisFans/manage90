@@ -2,8 +2,6 @@ package com.asiainfo.lcbms.model;
 
 import lombok.Data;
 
-import java.util.UUID;
-
 /**
  * @author zhangjp
  * @date 2020-05-09 16:01

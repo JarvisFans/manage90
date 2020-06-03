@@ -7,6 +7,7 @@ import com.asiainfo.lcbms.model.trace.TraceRequest;
 import com.asiainfo.lcbms.model.trace.TraceResponse;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -32,6 +33,7 @@ public class TraceOnlineController {
     }
 
     @PostMapping("/traceonline")
+    @HystrixCommand(fallbackMethod = "traceFallback")
     public TableResult traceController(String mdn, String apn) {
         List<TOnline> onlineList;
         TableResult result = null;
@@ -69,6 +71,11 @@ public class TraceOnlineController {
             log.error("Controller层错误", e);
             result = new TableResult(0, "执行失败");
         }
+        return result;
+    }
+
+    public TableResult traceFallback(String mdn, String apn, Throwable e){
+        TableResult result = new TableResult(0, "Controller降级,降级原因" + e);
         return result;
     }
 }

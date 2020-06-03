@@ -17,4 +17,9 @@ public class TraceResponse {
 
     private String error;
     private String appInfo;
+
+    public TraceResponse(String error, String appInfo) {
+        this.error = error;
+        this.appInfo = appInfo;
+    }
 }

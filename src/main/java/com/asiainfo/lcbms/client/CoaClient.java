@@ -3,7 +3,6 @@ package com.asiainfo.lcbms.client;
 import com.asiainfo.lcbms.client.fallback.CoaClientFallback;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.context.annotation.Primary;
-import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PostMapping;
 
 /**
